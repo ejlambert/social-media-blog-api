@@ -38,8 +38,9 @@ public class SocialMediaController {
         app.get("/messages", this::getAllMessagesHandler);
         app.post("/messages", this::postMessageHandler);
         app.post("/register", this::postAccountHandler);
+        app.post("/login", this::postAccountLoginHandler);
 
-        app.start(8080);
+        // app.start(8080);
         return app;
     }
 
@@ -71,10 +72,24 @@ public class SocialMediaController {
         ObjectMapper mapper = new ObjectMapper();
         Account account = mapper.readValue(ctx.body(), Account.class);
         Account addedAccount = accountService.addAccount(account);
-        if(addedAccount!=null){
+        if(addedAccount!=null && addedAccount.getUsername()!="" && addedAccount.getPassword().length() >= 4){
             ctx.json(mapper.writeValueAsString(addedAccount));
         }else{
             ctx.status(400);
+        }
+    }
+
+    private void postAccountLoginHandler(Context ctx) throws JsonProcessingException {
+        ObjectMapper mapper = new ObjectMapper();
+        Account account = mapper.readValue(ctx.body(), Account.class);
+        Account loginAccount = accountService.logIntoAccount(account);
+        System.out.println("test start");
+        if(loginAccount!=null){
+            System.out.println("test pass");
+            ctx.json(mapper.writeValueAsString(loginAccount));
+        }else{
+            System.out.println("test fail");
+            ctx.status(401);
         }
     }
 
