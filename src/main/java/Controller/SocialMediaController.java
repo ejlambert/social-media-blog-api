@@ -61,7 +61,7 @@ public class SocialMediaController {
         ObjectMapper mapper = new ObjectMapper();
         Message message = mapper.readValue(ctx.body(), Message.class);
         Message addedMessage = messageService.addMessage(message);
-        if(addedMessage!=null){
+        if(addedMessage!=null && addedMessage.message_text.length() < 255){
             ctx.json(mapper.writeValueAsString(addedMessage));
         }else{
             ctx.status(400);
@@ -83,12 +83,9 @@ public class SocialMediaController {
         ObjectMapper mapper = new ObjectMapper();
         Account account = mapper.readValue(ctx.body(), Account.class);
         Account loginAccount = accountService.logIntoAccount(account);
-        System.out.println("test start");
         if(loginAccount!=null){
-            System.out.println("test pass");
             ctx.json(mapper.writeValueAsString(loginAccount));
         }else{
-            System.out.println("test fail");
             ctx.status(401);
         }
     }
