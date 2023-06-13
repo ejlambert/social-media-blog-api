@@ -29,7 +29,6 @@ public class MessageDAO {
 
     public Message getMessageById(int message_id){
         Connection connection = ConnectionUtil.getConnection();
-        List<Message> messages = new ArrayList<>();
 
         System.out.println("test start");
         try {

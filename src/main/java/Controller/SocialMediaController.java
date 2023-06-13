@@ -60,7 +60,12 @@ public class SocialMediaController {
 
     private void getMessageByIdHandler(Context ctx) throws JsonProcessingException{
         Message messageRecieved = messageService.getMessageById(Integer.parseInt(ctx.path().substring(10)));
-        ctx.json(messageRecieved);
+        if(messageRecieved!=null){
+            ctx.json(messageRecieved);
+        }
+        else{
+            ctx.json("");
+        }
     }
 
     private void postMessageHandler(Context ctx) throws JsonProcessingException {
